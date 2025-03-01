@@ -1,0 +1,18 @@
+/* style.css */
+
+#progress {
+    display: inline-block; /* Keep it on the same line */
+    border: 5px solid #f3f3f3; /* Light grey border */
+    border-top: 5px solid #3498db; /* Blue border top */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite; /* Add the spin animation */
+    margin-left: 10px; /* Add some space */
+    vertical-align: middle; /* Align vertically */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

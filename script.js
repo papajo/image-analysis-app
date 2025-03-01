@@ -4,10 +4,16 @@ async function analyzeImage(file) {
   reader.onload = async (e) => {
     const imageData = e.target.result;
     const resultDiv = document.getElementById('result');
-    const progressDiv = document.getElementById('progress'); // Get the progress div
+    const progressDiv = document.getElementById('progress');
 
-    resultDiv.innerHTML = ''; // Clear previous results
-    progressDiv.innerHTML = 'Analyzing image...'; // Show progress message
+    resultDiv.innerHTML = '';
+    //progressDiv.innerHTML = 'Analyzing image...'; // Remove this line
+
+    // Create the spinner element
+    const spinner = document.createElement('div');
+    spinner.id = 'spinner'; // Give it an ID so CSS can style it
+    progressDiv.appendChild(spinner);  // Add the spinner to the progress div
+
 
     try {
       const response = await fetch('http://localhost:3000/analyze', { // Adjust URL if needed
@@ -23,11 +29,15 @@ async function analyzeImage(file) {
       }
 
       const data = await response.json();
-      progressDiv.innerHTML = ''; // Hide progress message
+      //progressDiv.innerHTML = ''; // Remove this line
+      progressDiv.removeChild(spinner); // Remove the spinner
       displayResults(data);
     } catch (error) {
       console.error('Error analyzing image:', error);
-      progressDiv.innerHTML = ''; // Hide progress message
+      //progressDiv.innerHTML = ''; // Remove this line
+      if (progressDiv.contains(spinner)) {
+          progressDiv.removeChild(spinner); // Remove the spinner (if it exists)
+      }
       resultDiv.innerHTML = 'Failed to analyze image.';
     }
   };
@@ -36,7 +46,10 @@ async function analyzeImage(file) {
     console.error("Error reading file:", reader.error);
     const resultDiv = document.getElementById('result');
     const progressDiv = document.getElementById('progress');
-    progressDiv.innerHTML = ''; // Hide progress message (if it was showing)
+    //progressDiv.innerHTML = ''; // Remove this line
+     if (progressDiv.contains(spinner)) {
+          progressDiv.removeChild(spinner); // Remove the spinner (if it exists)
+      }
     resultDiv.innerHTML = 'Failed to read the image file.';
   };
 
